@@ -3,21 +3,46 @@
 buildscript {
     repositories {
         jcenter()
+        mavenCentral()
+        mavenLocal()
+        maven {
+            credentials.username getPropertyValue('NEXUS_USERNAME')
+            credentials.password getPropertyValue('NEXUS_PASSWORD')
+            url "http://nexus.mtvi.com/nexus/content/repositories/snapshots"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.2'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath 'com.vmn.gradle:Pipeline:0.5.0-SNAPSHOT'
     }
+}
+
+ext{
+    //Get user name password for your nexus repository.
+    //These values are available to all sub projects.
+
+    NEXUS_USERNAME = getPropertyValue('NEXUS_USERNAME')
+    NEXUS_PASSWORD = getPropertyValue('NEXUS_PASSWORD')
 }
 
 allprojects {
     repositories {
         jcenter()
+        mavenCentral()
+        mavenLocal()
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+def getPropertyValue(String propName) {
+    if (project.hasProperty(propName)){
+        project.getProperty(propName);
+    } else if (System.getenv(propName) != null){
+        System.getenv(propName)
+    } else {
+        throw new GradleException("Properety $propName not found..")
+    }
 }

@@ -1,7 +1,7 @@
 # Android studio
 *.iml
 local.properties
-*/.idea/*
+.idea/*
 /captures
 
 # OSX documents
@@ -11,3 +11,4 @@ local.properties
 build/
 .gradle/
 .externalNativeBuild
+gradle.properties
