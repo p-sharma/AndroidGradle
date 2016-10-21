@@ -1,0 +1,14 @@
+def getPropertyValue(String propName) {
+    if (project.hasProperty(propName)) {
+        project.getProperty(propName);
+    } else if (System.getenv(propName) != null) {
+        System.getenv(propName)
+    } else {
+        throw new GradleException("Properety $propName not found..")
+    }
+}
+
+
+ext{
+    getPropertyValue = this.&getPropertyValue
+}
