@@ -1,7 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'checkstyle'
 apply plugin: 'maven'
-apply plugin: 'jacoco'
 
 android {
     compileSdkVersion 24

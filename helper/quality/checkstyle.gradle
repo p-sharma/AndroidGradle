@@ -1,0 +1,54 @@
+apply plugin: 'checkstyle'
+
+checkstyle {
+    toolVersion = "6.1.1"
+}
+
+task checkstyleMain(overwrite: true, type: Checkstyle) {
+    configFile rootProject.file('config/checkstyle/checkstyle.xml')
+    source 'src/main/java'
+    include '**/*.java'
+
+    reports {
+        xml {
+            destination "$buildDir/reports/checkstyleMain.xml"
+        }
+    }
+    classpath = files()
+}
+
+task checkstyleTest(overwrite: true, type: Checkstyle) {
+    configFile rootProject.file('config/checkstyle/checkstyle.xml')
+    source 'src/main/test'
+    include '**/*.java'
+
+    reports {
+        xml {
+            destination "$buildDir/reports/checkstyleTest.xml"
+        }
+    }
+    classpath = files()
+}
+
+task checkstyleMainHtml << {
+    def outfile = new File(checkstyleMain.reports.xml.destination.parent, 'checkstyleMain.html')
+    if (outfile.exists()) {
+        ant.xslt(in: checkstyleMain.reports.xml.destination,
+                style: rootProject.file('config/checkstyle/checkstyle-noframes-sorted.xsl'),
+                out: outfile)
+        println 'Checkstyle report available in HTML at file://' + outfile
+    }
+}
+
+task checkstyleTestHtml << {
+    def outfile = new File(checkstyleTest.reports.xml.destination.parent, 'checkstyleTest.html')
+    if (outfile.exists()) {
+        ant.xslt(in: checkstyleTest.reports.xml.destination,
+                style: rootProject.file('config/checkstyle/checkstyle-noframes-sorted.xsl'),
+                out: outfile)
+        println 'Checkstyle report available in HTML at file://' + outfile
+    }
+}
+
+checkstyleMain.finalizedBy checkstyleMainHtml
+checkstyleTest.finalizedBy checkstyleTestHtml
