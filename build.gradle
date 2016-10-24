@@ -103,19 +103,74 @@ subprojects {
 
     }
 
+    plugins.withType(JacocoPlugin) {
+        jacoco {
+            toolVersion = "0.7.1.201405082137"
+        }
+
+        def coverageSourceDirs = [
+            "${projectDir}/src/main/java"
+        ]
+
+        //Additional class patterns to exclude from coverage
+        def additionalClasses = [
+        ]
+
+        //Excluded classes from coverage
+        def excludes = [
+              '**/R.class',
+              '**/R$*.class',
+              '**/*$ViewInjector*.*',
+              '**/BuildConfig.*',
+              '**/Manifest*.*',
+        ]
+        excludes.addAll(additionalClasses);
+
+        task jacocoGenerateCSV {
+            group = "Reporting"
+            doFirst {
+                String excludedStr = excluded.toString()
+                String excludedStrNoBrackets = excludedStr.substring(1, excludedStr.length() - 1)
+                def file = new File("${buildDir}/excludes.csv")
+                file.getParentFile().mkdirs();
+                file.delete()
+                file.createNewFile()
+                file << excludedStrNoBrackets
+            }
+        }
+
+        task jacocoReport(type:JacocoReport, dependsOn: 'testDebugUnitTest') {
+            group = "Reporting"
+            description = "Generate Jacoco coverage reports for ${project.path}"
+
+            classDirectories = fileTree(
+              dir: "$buildDir/intermediates/classes/debug",
+              excludes: excludes
+            )
+            sourceDirectories = files(coverageSourceDirs)
+            executionData = files("$buildDir/jacoco/testDebugUnitTest.exec")
+
+            reports {
+                xml.enabled = false
+                html.enabled = true
+            }
+        }
+    }
+
     afterEvaluate {
         // Custom configuration specific to Android projects
         if (project.hasProperty('android')) {
             android {
                 compileSdkVersion 23
                 buildToolsVersion "23.0.2"
-                
+
                 buildTypes.release {
                     lintOptions.abortOnError false
                 }
 
                 buildTypes.debug {
                     lintOptions.abortOnError true
+                    testCoverageEnabled true
                 }
             }
         }
