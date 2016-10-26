@@ -46,6 +46,7 @@ allprojects {
 }
 
 subprojects {
+    apply from: "$rootDir/helper/libraries.gradle"
     apply from: "$rootDir/helper/coverage/jacoco.gradle"
     apply from: "$rootDir/helper/quality/checkstyle.gradle"
 
