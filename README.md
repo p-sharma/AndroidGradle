@@ -1,6 +1,6 @@
 # androidgradle
 
-Skeleton android project with default gradle settings for
+Skeleton android project with some default gradle settings. So far it has
 
 * Jacoco
 * Checkstyle
@@ -14,8 +14,8 @@ Most of the snippets i have learned from my work and stackoverflow.
 
 TODO :
 
-1. Externalize each feature in separate gradle file, so that they can be included externally. 
-2. Add support for product flavors and build variants. 
+* Externalize each feature in separate gradle file, so that they can be included externally. 
+* Add support for product flavors and build variants. 
 
 
 
