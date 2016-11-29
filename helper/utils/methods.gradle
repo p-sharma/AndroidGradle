@@ -1,0 +1,13 @@
+def getPropertyFromPropsFile(String prop, File propsFile) {
+    if (propsFile.exists()) {
+        def props = new Properties()
+        props.load(new FileInputStream(propsFile))
+        return props[prop]
+    } else {
+        return System.getenv(prop)
+    }
+}
+
+ext {
+    getProperty = this.&getPropertyFromPropsFile;
+}

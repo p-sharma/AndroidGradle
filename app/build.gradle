@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+apply from: "$rootDir/helper/signing/signing.gradle"
+
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
@@ -12,9 +14,13 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.defaultSigning
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseSigning
         }
     }
 }
