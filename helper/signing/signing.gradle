@@ -2,10 +2,11 @@ apply from: "$rootDir/helper/utils/methods.gradle"
 
 rootProject.ext {
     def signingPropsFile = rootProject.file('helper/signing/signing.properties')
-    KEYSTORE_LOCATION = getProperty('ANDROID_KEYSTORE_LOCATION', signingPropsFile)
-    KEYSTORE_PASSWORD = getProperty('ANDROID_KEYSTORE_PASSWORD', signingPropsFile)
-    KEYSTORE_ALIAS = getProperty('ANDROID_KEYSTORE_ALIAS', signingPropsFile)
-    KEYSTORE_ALIAS_PASSWORD = getProperty('ANDROID_KEYSTORE_ALIAS_PASSWORD', signingPropsFile)
+    KEYSTORE_LOCATION = getPropertyValue('ANDROID_KEYSTORE_LOCATION', signingPropsFile)
+    println "rootProject.KEYSTORE_LOCATION ${rootProject.KEYSTORE_LOCATION}"
+    KEYSTORE_PASSWORD = getPropertyValue('ANDROID_KEYSTORE_PASSWORD', signingPropsFile)
+    KEYSTORE_ALIAS = getPropertyValue('ANDROID_KEYSTORE_ALIAS', signingPropsFile)
+    KEYSTORE_ALIAS_PASSWORD = getPropertyValue('ANDROID_KEYSTORE_ALIAS_PASSWORD', signingPropsFile)
 }
 
 android {
@@ -17,6 +18,7 @@ android {
             keyPassword rootProject.KEYSTORE_ALIAS_PASSWORD
         }
         releaseSigning {
+            //Modify your release signing parameters here
             initWith signingConfigs.defaultSigning
         }
     }

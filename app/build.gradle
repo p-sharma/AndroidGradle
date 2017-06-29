@@ -12,15 +12,40 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
+
     buildTypes {
         debug {
             signingConfig signingConfigs.defaultSigning
+            manifestPlaceholders = [buildType: "dev", crashliticsApiKey: "YYYYYYYY"]
         }
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.releaseSigning
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [buildType: "live", crashliticsApiKey: "XXXXXXX"]
+        }
+    }
+
+    productFlavors {
+        demo {
+            applicationIdSuffix ".demo"
+            versionNameSuffix "-demo"
+        }
+        full {
+            applicationIdSuffix ".release"
+            versionNameSuffix "-release"
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            println "Variant is ${variant.name} ${variant.versionName} ${variant.versionCode}"
+            output.outputFile = new File(
+                    output.outputFile.parent,
+                    "App-${variant.name.replace("Debug", "").replace("Release", "")}" +
+                            "-${variant.versionName}-b${variant.versionCode}-${buildNumber}.apk")
         }
     }
 }

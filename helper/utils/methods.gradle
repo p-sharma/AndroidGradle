@@ -1,5 +1,5 @@
-def getPropertyFromPropsFile(String prop, File propsFile) {
-    if (propsFile.exists()) {
+def getPropertyFromPropsFile(String prop, File propsFile = null) {
+    if (propsFile && propsFile.exists()) {
         def props = new Properties()
         props.load(new FileInputStream(propsFile))
         return props[prop]
@@ -9,5 +9,6 @@ def getPropertyFromPropsFile(String prop, File propsFile) {
 }
 
 ext {
-    getProperty = this.&getPropertyFromPropsFile;
+    getPropertyValue = this.&getPropertyFromPropsFile;
+    buildNumber = 1
 }
