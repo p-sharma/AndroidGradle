@@ -11,7 +11,7 @@ task checkstyleMain(overwrite: true, type: Checkstyle) {
 
     reports {
         xml {
-            destination "$buildDir/reports/checkstyleMain.xml"
+            destination file("$buildDir/reports/checkstyleMain.xml")
         }
     }
     classpath = files()
@@ -24,30 +24,34 @@ task checkstyleTest(overwrite: true, type: Checkstyle) {
 
     reports {
         xml {
-            destination "$buildDir/reports/checkstyleTest.xml"
+            destination file("$buildDir/reports/checkstyleTest.xml")
         }
     }
     classpath = files()
 }
 
-task checkstyleMainHtml << {
-    def outfile = new File(checkstyleMain.reports.xml.destination.parent, 'checkstyleMain.html')
-    if (outfile.exists()) {
-        ant.xslt(in: checkstyleMain.reports.xml.destination,
-                style: rootProject.file('config/checkstyle/checkstyle-noframes-sorted.xsl'),
-                out: outfile)
-        println 'Checkstyle report available in HTML at file://' + outfile
+task checkstyleMainHtml {
+    doLast{
+      def outfile = new File(checkstyleMain.reports.xml.destination.parent, 'checkstyleMain.html')
+      if (outfile.exists()) {
+          ant.xslt(in: checkstyleMain.reports.xml.destination,
+                  style: rootProject.file('config/checkstyle/checkstyle-noframes-sorted.xsl'),
+                  out: outfile)
+          println 'Checkstyle report available in HTML at file://' + outfile
+      }
     }
 }
 
-task checkstyleTestHtml << {
-    def outfile = new File(checkstyleTest.reports.xml.destination.parent, 'checkstyleTest.html')
-    if (outfile.exists()) {
-        ant.xslt(in: checkstyleTest.reports.xml.destination,
-                style: rootProject.file('config/checkstyle/checkstyle-noframes-sorted.xsl'),
-                out: outfile)
-        println 'Checkstyle report available in HTML at file://' + outfile
-    }
+task checkstyleTestHtml {
+    doLast{
+      def outfile = new File(checkstyleTest.reports.xml.destination.parent, 'checkstyleTest.html')
+      if (outfile.exists()) {
+          ant.xslt(in: checkstyleTest.reports.xml.destination,
+                  style: rootProject.file('config/checkstyle/checkstyle-noframes-sorted.xsl'),
+                  out: outfile)
+          println 'Checkstyle report available in HTML at file://' + outfile
+      }
+   }
 }
 
 checkstyleMain.finalizedBy checkstyleMainHtml

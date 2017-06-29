@@ -14,7 +14,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.android.tools.build:gradle:2.3.3'
         classpath 'com.vmn.gradle:Pipeline:0.5.0-SNAPSHOT'
     }
 }
@@ -47,15 +47,15 @@ allprojects {
 
 subprojects {
     apply from: "$rootDir/helper/libraries.gradle"
-    apply from: "$rootDir/helper/coverage/jacoco.gradle"
-    apply from: "$rootDir/helper/quality/checkstyle.gradle"
+    //apply from: "$rootDir/helper/coverage/jacoco.gradle"
+    //apply from: "$rootDir/helper/quality/checkstyle.gradle"
 
     afterEvaluate {
         // Custom configuration specific to Android projects
         if (project.hasProperty('android')) {
             android {
-                compileSdkVersion 23
-                buildToolsVersion "23.0.2"
+                compileSdkVersion 25
+                buildToolsVersion "25.0.0"
 
                 buildTypes.release {
                     lintOptions.abortOnError false

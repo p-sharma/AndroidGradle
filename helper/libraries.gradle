@@ -1,7 +1,7 @@
 ext.libraries = [
     espresso_core: "com.android.support.test.espresso:espresso-core:2.2.2",
     junit: "junit:junit:4.12",
-    appcompat: "com.android.support:appcompat-v7:24.2.1",
+    appcompat: "com.android.support:appcompat-v7:25.+",
     roboelectric: dependencies.create("org.robolectric:robolectric:3.1"){
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
